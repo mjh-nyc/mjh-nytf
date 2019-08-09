@@ -1,0 +1,32 @@
+footer {
+	position: relative;
+	border-top:1px solid $grey;
+	a {
+		color:$white;
+		box-shadow:none !important;
+	}
+
+
+	.footer-wrapper {
+		font-size:1rem;
+		padding-top:3.8rem;
+		padding-bottom:3.8rem;
+		
+		&.social {
+			background-color:$white;
+			@extend .social;
+		}
+		
+		&.legal {
+			background-color:$black;
+			color:$grey;
+			a {
+				color:$white;
+			}
+		}
+		h3 {
+			display:none;
+		}
+	}
+}
+

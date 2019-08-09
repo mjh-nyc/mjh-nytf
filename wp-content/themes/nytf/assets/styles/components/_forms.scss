@@ -1,0 +1,41 @@
+// Search form
+.search-form {
+  @extend .form-inline;
+}
+.search-form label {
+  font-weight: normal;
+  @extend .form-group;
+}
+.search-form .search-field {
+  @extend .form-control;
+}
+.search-form .search-submit {
+  @extend .btn;
+  @extend .btn-secondary;
+}
+
+.wpcf7 {
+	form {
+		label {
+			width:100%;
+		}
+		input[type="text"],
+		input[type="email"],
+		select,
+		textarea {
+			width:100%;
+			border:2px solid $black;
+			padding:0.5rem 1rem;
+		}
+		input[type="submit"] {
+			@extend .button;
+			text-decoration: none;
+    		color: $white;
+    		background: $black;
+    		border:none;
+		}
+		div.wpcf7-response-output {
+			margin:0;
+		}
+	}
+}

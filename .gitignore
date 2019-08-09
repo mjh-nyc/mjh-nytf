@@ -6,6 +6,12 @@
 wp-content/*
 !wp-content/themes/nytf/
 
+# ignore theme dev settings
+wp-content/themes/nytf/bower_components
+wp-content/themes/nytf/node_modules
+wp-content/themes/nytf/npm-debug.log
+wp-content/themes/nytf/vendor/
+
 
 # track this file .gitignore (i.e. do NOT ignore it)
 !.gitignore

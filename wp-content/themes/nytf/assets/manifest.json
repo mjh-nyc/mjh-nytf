@@ -19,11 +19,6 @@
     },
     "jquery.js": {
       "bower": ["jquery"]
-    },
-    "bigSlide.js": {
-     "files": [
-        "scripts/bigSlide.js"
-      ]
     }
   },
   "config": {

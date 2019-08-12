@@ -241,3 +241,128 @@ add_filter('acf/settings/google_api_key', function () {
 function empty_content($str) {
     return trim(str_replace('&nbsp;','',strip_tags($str))) == '';
 }
+
+
+/**
+ * Return featured image of post src only
+ *
+ * @return string
+ */
+function featuredImageSrc($size='large',$id=false)
+{
+    $image = "";
+    if (!$id){
+        $id = get_the_ID();
+    }
+    if (has_post_thumbnail( $id ) ) {
+        $thumb_id = get_post_thumbnail_id($id);
+        $thumb_url_array = wp_get_attachment_image_src($thumb_id, $size, true);
+        $image = $thumb_url_array[0];
+
+    } 
+    if (!$image) {
+        //use default image entered under social in theme options
+        $image = get_field('social','option');
+    }
+    return $image;
+}
+/**
+ * Return featured image of post
+ *
+ * @return html
+ */
+function featuredImage($size='large',$id=false)
+{
+    $image = "";
+    if (!$id){
+        $id = get_the_ID();
+    }
+    if (has_post_thumbnail( $id ) ) {
+        $image = get_the_post_thumbnail( $id, $size );
+    }
+    return $image;
+}
+
+ /**
+ * Return featured image alt, pass post ID
+ *
+ * @return string
+ */
+function featuredImageAlt($id=false)
+{
+    $image_alt = "";
+    if ($id) {
+        $post_thumbnail_id = get_post_thumbnail_id($id);
+        $image_alt = get_post_meta( $post_thumbnail_id, '_wp_attachment_image_alt', true);
+    }
+    return $image_alt;
+}
+
+
+/**
+ * Return the post categories in a string
+ *
+ * @return string
+ */
+function postTermsString($id=false, $taxonomy = '')
+{
+    $terms = postTerms($id, $taxonomy);
+    $term_string = '';
+    if(!empty($terms)){
+        foreach ($terms as $key=> $term){
+            if($key > 0){
+                $term_string.=", ";
+            }
+            $term_string.=$term->name;
+        }
+    }
+    return $term_string;
+}
+
+/**
+ * Return the post terms
+ *
+ * @return array
+ */
+function postTerms($id=false, $taxonomy = '')
+{
+    if (!$id){
+        $id = get_the_ID();
+    }
+    return get_the_terms($id,$taxonomy);
+}
+
+/**
+ * Used by various functions to truncate the string to specified number of words
+ *
+ * @return string
+ */
+function truncateString($string, $limit=5) {
+    if ($string) {
+        if (str_word_count($string, 0) > $limit) {
+              $words = str_word_count($string, 2);
+              $pos = array_keys($words);
+              $string = substr($string, 0, $pos[$limit]) . '...';
+          }
+          return $string;
+    }
+}
+
+/**
+ * Compares start and end date and cleans output if same day
+ *
+ * @return string
+ */
+function cleanDateOutput($start_date, $end_date){
+    if( empty($end_date) ){
+        return $start_date;
+    }
+    $start_date_day = date('Y-m-d', strtotime($start_date));
+    $end_date_day = date('Y-m-d', strtotime($end_date));
+    if($start_date_day == $end_date_day ){
+        $date_output = $start_date;
+    }else{
+        $date_output = date('M j', strtotime($start_date))." &#8211; ".date('M j, Y', strtotime($end_date));
+    }
+    return $date_output;
+}

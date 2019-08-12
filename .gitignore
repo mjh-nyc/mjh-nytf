@@ -4,12 +4,13 @@
 
 # ignore everything in the "wp-content" directory, except:
 # wp-content/*
-!wp-content/themes/nytf/
 wp-content/*
+!wp-content/themes/nytf/
+!wp-content/plugins/advanced-custom-fields-pro/
 
 # ignore theme dev settings
-wp-content/themes/nytf/bower_components
-wp-content/themes/nytf/node_modules
+wp-content/themes/nytf/bower_components/
+wp-content/themes/nytf/node_modules/
 wp-content/themes/nytf/npm-debug.log
 wp-content/themes/nytf/vendor/
 

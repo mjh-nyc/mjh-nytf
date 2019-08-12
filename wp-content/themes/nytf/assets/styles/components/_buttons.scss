@@ -1,0 +1,63 @@
+// BUTTONS
+.button {
+	@include benton-bold();
+	padding:20px 30px;
+	margin:15px 20px 0 0;
+	text-transform:none;
+	min-width:180px;
+	text-decoration:none;
+	display:inline-block !important;
+	box-shadow:none !important;
+	text-align:center;
+	
+	transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+	
+	
+	&.white {
+		background-color:$white;
+		color: $black;
+	}
+
+	&.black {
+		background-color:$black;
+		color: $white;
+	}
+	&.red {
+		background-color:$brand-tertiary;
+		color: $white;
+	}
+	&.purple {
+		background-color:$brand-secondary;
+		color: $white;
+	}
+
+
+	&:hover, &:focus, &:active {
+		text-decoration:none;
+		color:$white;
+		background:$black;
+	}
+
+	@include breakpoint(medium) {
+		padding:20px 30px;
+	}
+}
+
+.no-shadow {
+	box-shadow:none !important;
+	
+}
+.no-style {
+	box-shadow:none !important;
+	border-bottom:none !important;
+	color:inherit;
+	text-decoration:none;
+	&:hover, &:focus, &:active {
+		text-decoration:none;
+		color:inherit;
+	}
+}
+
+//END BUTTONS

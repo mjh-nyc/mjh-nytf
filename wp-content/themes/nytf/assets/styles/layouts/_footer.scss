@@ -1,6 +1,9 @@
 footer {
 	position: relative;
-	border-top:1px solid $grey;
+	background-color:$black;
+	color:$white;
+	padding-top:2rem;
+	padding-bottom:2rem;
 	a {
 		color:$white;
 		box-shadow:none !important;
@@ -9,23 +12,44 @@ footer {
 
 	.footer-wrapper {
 		font-size:1rem;
-		padding-top:3.8rem;
-		padding-bottom:3.8rem;
+		.primary {
+			@include breakpoint(medium) {
+				display: flex;
+				justify-content: space-between;
+			}
+		}
 		
-		&.social {
-			background-color:$white;
-			@extend .social;
+		.social {
+			a {
+				color: $white;
+				border-color: $white;
+				text-align: center;
+				padding-top: 0.3rem;
+			}
 		}
 		
 		&.legal {
-			background-color:$black;
 			color:$grey;
 			a {
+				text-decoration: underline;
 				color:$white;
+
+			}
+			.footer-navigation-links {
+				@include listReset();
+				li {
+					display: inline;
+					@include breakpoint(medium) {
+						margin-right: 1rem;
+					}
+				}
 			}
 		}
-		h3 {
-			display:none;
+		.widget {
+			margin-bottom: 2rem;
+			h3 {
+				padding-top: 0;
+			}
 		}
 	}
 }

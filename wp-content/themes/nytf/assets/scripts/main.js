@@ -12,15 +12,18 @@
 
 (function($) {
 
-	var mapStyles = [ { "featureType": "all", "elementType": "labels.text.fill", "stylers": [ { "saturation": 36 }, { "color": "#333333" }, { "lightness": 40 } ] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [ { "visibility": "on" }, { "color": "#ffffff" }, { "lightness": 16 } ] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "administrative", "elementType": "geometry.fill", "stylers": [ { "color": "#fefefe" }, { "lightness": 20 } ] }, { "featureType": "administrative", "elementType": "geometry.stroke", "stylers": [ { "color": "#fefefe" }, { "lightness": 17 }, { "weight": 1.2 } ] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [ { "color": "#f5f5f5" }, { "lightness": 20 } ] }, { "featureType": "poi", "elementType": "geometry", "stylers": [ { "color": "#f5f5f5" }, { "lightness": 21 } ] }, { "featureType": "poi.attraction", "elementType": "all", "stylers": [ { "visibility": "on" } ] }, { "featureType": "poi.park", "elementType": "all", "stylers": [ { "visibility": "on" }, { "hue": "#ff0000" } ] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [ { "color": "#dedede" }, { "lightness": 21 } ] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [ { "color": "#e5e5e5" }, { "visibility": "on" } ] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [ { "color": "#ffffff" }, { "lightness": 17 } ] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [ { "color": "#ffffff" }, { "lightness": 29 }, { "weight": 0.2 } ] }, { "featureType": "road.arterial", "elementType": "geometry", "stylers": [ { "color": "#ffffff" }, { "lightness": 18 } ] }, { "featureType": "road.local", "elementType": "geometry", "stylers": [ { "color": "#ffffff" }, { "lightness": 16 } ] }, { "featureType": "transit", "elementType": "all", "stylers": [ { "visibility": "on" } ] }, { "featureType": "transit", "elementType": "geometry", "stylers": [ { "color": "#f2f2f2" }, { "lightness": 19 } ] }, { "featureType": "transit.line", "elementType": "all", "stylers": [ { "visibility": "on" } ] }, { "featureType": "transit.line", "elementType": "labels.text", "stylers": [ { "visibility": "on" } ] }, { "featureType": "transit.station.bus", "elementType": "all", "stylers": [ { "visibility": "on" } ] }, { "featureType": "transit.station.rail", "elementType": "all", "stylers": [ { "visibility": "on" } ] }, { "featureType": "transit.station.rail", "elementType": "labels", "stylers": [ { "visibility": "on" } ] }, { "featureType": "water", "elementType": "all", "stylers": [ { "color": "#7d7d7d" } ] }, { "featureType": "water", "elementType": "geometry", "stylers": [ { "color": "#e9e9e9" }, { "lightness": 17 } ] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [ { "color": "#c1ebff" } ] } ];
-
+	
   // Use this variable to set up the common and page specific functions. If you
   // rename this variable, you will also need to rename the namespace below.
   var Sage = {
     // All pages
     'common': {
       init: function() {
-
+        
+        //lazy load images off screen anything that has a lazy class
+        jQuery('.lazy').unveil({
+          offset: 100,
+        });
 
         $('.menu-link').bigSlide({
           side: 'right',
@@ -36,7 +39,8 @@
         $('#menu-primary-navigation .current-menu-parent').toggleClass('open').find('ul').slideToggle();
 
 
-
+        //sticky header
+        $("header").stick_in_parent();
 
 
         //function to scroll to section
@@ -48,24 +52,7 @@
     			}, 1000);
     		});
 
-        //initialize swiper when document ready
-      	if (!$('body').hasClass('timeline')) {
-      		var mySwiper = new Swiper ('.swiper-container', {
-       	 		// Optional parameters
-        			pagination: '.swiper-pagination',
-          		effect: 'coverflow',
-          		grabCursor: true,
-          		centeredSlides: true,
-          		slidesPerView: 2,
-          		coverflow: {
-              		rotate: 50,
-              		stretch: 0,
-              		depth: 100,
-              		modifier: 1,
-              		slideShadows : true
-          		}
-          	});
-        }
+        
 
   		
       },
@@ -81,7 +68,50 @@
       },
 
       finalize: function() {
-       
+        //set buttons width
+        if ($('.buttons').length > 0) {
+          var maxWidth = 0;
+          var countLimit = 2;
+          $('.buttons a').each(function(i, index) {
+            if (i < countLimit) {
+              maxWidth += parseInt($(this).outerWidth()+40, 10);
+            }
+          });
+          $('.buttons').css('width', maxWidth-40+'px');
+        }
+
+        //set feature row margin for features with text content on left
+
+        $ref = $('.brand');
+        function setFeatureOffset() {
+          if ($( window ).width() > 768) { 
+            $offset = $ref.offset();
+            $offset_margin = $offset.left - 15;
+            $( '.features' ).find( '.left .feature-content-wrapper' ).css('margin-left',$offset_margin+'px');
+            $( '.features' ).find( '.right .feature-content-wrapper' ).css('margin-right',$offset_margin+'px');
+            //also set the flex order
+            $( '.features' ).find( '.left').css('order',1);
+            $( '.features' ).find( '.right').css('order',2);
+          } else {
+            $( '.features' ).find( '.left .feature-content-wrapper' ).css('margin-left',0);
+            $( '.features' ).find( '.right .feature-content-wrapper' ).css('margin-right',0);
+            //also set the flex order
+            $( '.features' ).find( '.feature-image').css('order',1);
+            $( '.features' ).find( '.feature-content').css('order',2);
+          }
+        }
+        function doneResizing(){
+          setFeatureOffset();
+        }
+        var id;
+        $(window).on('resize', function(){
+            clearTimeout(id);
+            id = setTimeout(doneResizing, 500);
+        });
+        
+        //also fire on load: 
+         setFeatureOffset();
+
       }
     },
   };
@@ -118,10 +148,6 @@
 
   // Load Events
   $(document).ready(UTIL.loadEvents);
-
-  function showMap() {
-
-}
 
 
 })(jQuery); // Fully reference jQuery after this point.

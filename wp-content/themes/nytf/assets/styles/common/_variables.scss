@@ -6,20 +6,15 @@ $sidebar-sm-columns:    4;
 $default-font-size:     18px; 
 
 // Colors
-$brand-primary:         #212121;
-$text-color:            #8895ae;
+$brand-primary:         #010101;
+$brand-secondary:		#73409c;
+$brand-tertiary:		#eb3d31;
+$text-color:            #010101;
 $body-bg:               #FFFFFF;
 
 //Supporting colors
-$yellow:                #f6ff00;
-$red:                   #ff0009;
-$black:                 #212121;
+$link:	                #f6ff00;
+$link-hover:	        #eb3d31;
+$black:                 #010101;
 $white:                 #FFFFFF;
-$grey:                  #d4d4d4;
-$grey-bg:				#f6f6f6;
-$blue:                  #00d8ff;
-$green:                 #59ff33;
-
-$marker-blue:			#00d8ff;
-$marker-purple:			#7200ff;
-$marker-green:			#90d812;
+$grey:                  #eeeeee;

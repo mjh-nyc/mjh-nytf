@@ -8,16 +8,11 @@ use Roots\Sage\Wrapper;
 <!doctype html>
 <html <?php language_attributes(); ?>>
   <?php get_template_part('templates/head'); ?>
+ 
   <?php
-    //if(is_home()): ?>
-    	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtNLJ_O8LmI6fTJqkNXM62pb5bjPVr8lk"></script>
-    <?php //endif;
-  ?>
-  <?php
-  	$bgs = array("blue", "purple", "violet");
-  	$rand_key = array_rand($bgs, 1);
   	$theme_uri = get_template_directory_uri();
-  	$rand_bg = $theme_uri.'/dist/images/secondary-header-'.$bgs[$rand_key].'.jpg';
+    $custom_logo_id = get_theme_mod( 'custom_logo' );
+    $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
   ?>
   
   <meta property="og:title" content="<?php bloginfo('name'); ?>"/>
@@ -25,9 +20,9 @@ use Roots\Sage\Wrapper;
   <meta property="og:site_name" content="<?php bloginfo('name'); ?>"/>
   <meta property="og:type" content="website"/>
   <meta property="og:description" name="description" content="<?php bloginfo('description'); ?>">
-  <meta property="og:image" content="<?php echo $theme_uri.'/dist/images/nycamp-for-facebook.jpg'; ?>" />
+  <meta property="og:image" content="<?php echo $theme_uri.'/dist/images/nytf-share.png'; ?>" />
   
-  <body <?php body_class(); ?> style="background-image:url('<?php echo $rand_bg; ?>');" id="top">
+  <body <?php body_class(); ?> id="top">
 
     <!--[if IE]>
       <div class="alert alert-warning">
@@ -36,10 +31,8 @@ use Roots\Sage\Wrapper;
     <![endif]-->
     <?php get_template_part('templates/nav'); ?>
     <?php
-      	if(!is_home()):
-      		do_action('get_header');
-      		get_template_part('templates/header');
-      	endif;
+      	do_action('get_header');
+      	get_template_part('templates/header');
       ?>
     <!--<div class="wrap <?php if(is_home()):echo 'homepage'; else: echo 'container'; endif; ?>" role="document">-->
 

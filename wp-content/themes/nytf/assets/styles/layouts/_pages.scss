@@ -142,6 +142,7 @@
 
 				.feature-img {
 					background-size: cover;
+					background-position: center;
 					height: 250px;
 					@include breakpoint(medium) {
 						height: auto;
@@ -152,6 +153,20 @@
 					color: $white !important;
 					padding-top: 1rem;
 					padding-bottom: 2rem;
+					&.left {
+						.feature-content-wrapper {
+							@include breakpoint(medium) {
+								padding-right: 15px;
+							}
+						}
+					}
+					&.right {
+						.feature-content-wrapper {
+							@include breakpoint(medium) {
+								padding-left: 15px;
+							}
+						}
+					}
 				}
 			}
 		} 

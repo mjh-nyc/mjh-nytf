@@ -80,8 +80,16 @@
           $('.buttons').css('width', maxWidth-40+'px');
         }
 
-        //set feature row margin for features with text content on left
+        //maintain aspect ratio btwn width and height on features 4:3
+        function setFeatureRatio(){
+          //calculate it
+          var img = $( ".features .feature-img" ).first();
+          var h = (img.width()* 3)/4;
+          //set it
+          $( '.features' ).find( '.feature-img').css('min-height',h+'px');
+        }
 
+        //set feature row margin for features with text content on left
         $ref = $('.brand');
         function setFeatureOffset() {
           if ($( window ).width() > 768) { 
@@ -102,6 +110,7 @@
         }
         function doneResizing(){
           setFeatureOffset();
+          setFeatureRatio();
         }
         var id;
         $(window).on('resize', function(){
@@ -111,6 +120,7 @@
         
         //also fire on load: 
          setFeatureOffset();
+         setFeatureRatio();
 
       }
     },

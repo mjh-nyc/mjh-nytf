@@ -7,7 +7,7 @@
     			<?php //get_template_part('templates/entry-meta'); ?>
     			<?php
     			//print event details if it's an event
-    			if ( get_post_type() =='event'){
+    			if ( get_post_type() =='event' && (!is_archive() && !is_search()) ){
     				//get_template_part( 'templates/content-event-details');
     				getEventDetails();
     			}

@@ -176,6 +176,9 @@ add_filter( 'get_the_archive_title', function ( $title ) {
     if( is_category() || is_tag() ) {
         $title = single_cat_title( '', false );
     }
+    if (is_post_type_archive()) {
+        $title = post_type_archive_title();
+    }
     return $title;
 });
 

@@ -197,7 +197,6 @@ function wpse_new_mail_from_name( $old ) {
 }
 //end
 
-
 //Unset the tag body class as it conflicts with bootstrap css
 function bs4_remove_tag_body_class( $classes ) {
     if ( false !== ( $class = array_search( 'tag', $classes ) ) ) {

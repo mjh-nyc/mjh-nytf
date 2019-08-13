@@ -2,15 +2,23 @@ footer {
 	position: relative;
 	background-color:$black;
 	color:$white;
-	padding-top:2rem;
+	
 	padding-bottom:2rem;
-	a {
-		color:$white;
-		box-shadow:none !important;
-	}
+	
 
 
 	.footer-wrapper {
+
+		a:link, a:visited, a:focus, a:hover {
+			color:$white;
+			text-decoration: underline;
+			box-shadow:none !important;
+		}
+		a:hover {
+			opacity: 0.5;
+		}
+
+	
 		font-size:1rem;
 		.primary {
 			@include breakpoint(medium) {
@@ -18,13 +26,17 @@ footer {
 				justify-content: space-between;
 			}
 		}
+
+		&.contact {
+			padding-top:2rem;
+		}
 		
 		.social {
 			a {
 				color: $white;
 				border-color: $white;
 				text-align: center;
-				padding-top: 0.3rem;
+				padding-top: 0.4rem;
 			}
 		}
 		
@@ -49,6 +61,21 @@ footer {
 			margin-bottom: 2rem;
 			h3 {
 				padding-top: 0;
+			}
+		}
+	}
+
+	.announcement {
+		background-color: $brand-secondary;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		.row {
+			align-items: center;
+			color: $white;
+			a, p {
+				@include breakpoint(medium) {
+					margin: 0;
+				}
 			}
 		}
 	}

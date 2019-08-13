@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "asset-builder": "^1.1.0",
-    "browser-sync": "^2.8.2",
+    "browser-sync": "^2.26.7",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
@@ -47,7 +47,7 @@
     "gulp-uglify": "^2.0.0",
     "gulp-uglify-es": "^1.0.1",
     "imagemin-pngcrush": "^5.0.0",
-    "jshint": "^2.9.3",
+    "jshint": "^2.10.2",
     "jshint-stylish": "^2.0.1",
     "lazypipe": "^1.0.1",
     "merge-stream": "^1.0.0",

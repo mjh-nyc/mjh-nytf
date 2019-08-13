@@ -118,7 +118,7 @@
 									echo '<div class="feature-buttons">';
 										if( $feature_buttons ):
 											foreach ($feature_buttons as $button):
-												echo '<a href="'.$button['feature_button_url'].'" class="button '.$button['feature_button_class'].'">'.$button['feature_button_text'].'</a>';
+												echo '<a href="'.$button['feature_button_url']['url'].'" class="button '.$button['feature_button_class'].'">'.$button['feature_button_text'].'</a>';
 											endforeach;
 										endif;
 									echo '</div>';
@@ -290,9 +290,7 @@
 				$callout_button_label = get_field('callout_button_label','option');
 				$callout_button_url = get_field('callout_button_url','option');
 				
-				$announcement = get_field('announcement','option');
-				$announcement_button_label = get_field('announcement_button_label','option');
-				$announcement_button_url = get_field('announcement_button_url','option');
+				
 				?>
 				<div class="col-md-6 feature-content left">
 					<?php 
@@ -312,18 +310,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="announcement">
-		<div class="container">
-			<div class="row ">
-				<div class="col-md-6">
-					<p><?php echo $announcement; ?></p>
-				</div>
-				<div class="col-md-6">
-					<?php echo '<a href="'.$announcement_button_url.'" class="button red">'.$announcement_button_label.'</a>'; ?>
-				</div>
-			</div>
-		</div>
-	</section>
+	
 </div>
 
 

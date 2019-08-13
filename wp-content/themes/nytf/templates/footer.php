@@ -1,4 +1,21 @@
+<?php
+  $announcement = get_field('announcement','option');
+  $announcement_button_label = get_field('announcement_button_label','option');
+  $announcement_button_url = get_field('announcement_button_url','option');
+?>
 <footer class="content-info push">
+  <section class="announcement">
+    <div class="container">
+      <div class="row ">
+        <div class="col-md-6">
+          <p><?php echo $announcement; ?></p>
+        </div>
+        <div class="col-md-6">
+          <?php echo '<a href="'.$announcement_button_url.'" class="button red">'.$announcement_button_label.'</a>'; ?>
+        </div>
+      </div>
+    </div>
+  </section>
   <div class="footer-wrapper contact">
       <div class="container primary">
         <?php dynamic_sidebar('sidebar-footer-contact'); ?>

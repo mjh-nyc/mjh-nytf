@@ -12,11 +12,11 @@ if (get_field('embed_code')):
 	echo '</div>';
 endif;
 
-if (has_post_thumbnail()):
+/*if (has_post_thumbnail()):
 	echo '<div class="featured-content container">';
 	include( locate_template( 'templates/featured-image.php' ) );
 	echo '</div>';
-endif; ?>
+endif;*/ ?>
 
 <div class="container">
 	<?php include( locate_template( 'templates/content-main.php' ) ); ?>

@@ -48,11 +48,15 @@ header {
 	}
 	.hamburger {
 		font-size:1.5rem;
-		color:$black;
+		color: $white;
 	}
 }
 
 
+.container.header {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
 
 
 .nav-primary {

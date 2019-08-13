@@ -7,6 +7,9 @@ header {
 	/*&.is_stuck {
 		padding:1rem 0;
 	}*/
+	.container .row {
+		align-items: center;
+	}
 }
 
 //Navigation
@@ -27,7 +30,7 @@ header {
 		max-width:75%;
 		height:auto;
 		@include breakpoint(medium) {
-       		max-width:300px;
+       		max-width:200px;
     	}
     }
 }

@@ -5,7 +5,9 @@
                 <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">
                     <?php
                         if ( has_custom_logo() ) {
-                            echo '<img src="' . esc_url( $logo ) . '" alt="' . get_bloginfo( 'name' ) . '">';
+                            $custom_logo_id = get_theme_mod( 'custom_logo' );
+                            $image = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+                            echo '<img src="' . esc_url( $image[0] ) . '" alt="' . get_bloginfo( 'name' ) . '">';
                         } else {
                             echo get_bloginfo( 'name' );
                         } ?>

@@ -304,8 +304,9 @@
 						echo '</div>';
 					} ?>
 				</div>
-				<div class="col-md-6 feature-img right" <?php if ($callout_image): echo 'style="background-image:url('. $callout_image['sizes']['large'].')";'; endif; ?>>
-
+				<div class="col-md-6 right" style="background-color: #010101;">
+					<?php if ($callout_image): echo '<img src="'. $callout_image['sizes']['medium'].'" alt="'.$callout_image['alt'].'">'; endif;
+					?>
 				</div>
 			</div>
 		</div>

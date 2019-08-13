@@ -40,7 +40,7 @@
 
 
         //sticky header
-        $("header").stick_in_parent();
+        //$("header").stick_in_parent();
 
 
         //function to scroll to section

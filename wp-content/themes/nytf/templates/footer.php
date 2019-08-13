@@ -10,7 +10,7 @@
         <div class="col-md-2">
          
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 announcement-content">
           <p><?php echo $announcement; ?></p>
           <?php echo '<a href="'.$announcement_button_url.'" class="button red">'.$announcement_button_label.'</a>'; ?>
         </div>

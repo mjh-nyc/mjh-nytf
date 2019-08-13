@@ -354,3 +354,72 @@ function evalDateStatus($start_date, $end_date){
         }
     }
 }
+
+
+function getEventDetails() {
+    if (get_field('event_start_date')) {
+        echo '<div class="entry-meta">';
+        echo '<strong>';
+            if (get_field('event_end_date')) {
+              echo cleanDateOutput(get_field('event_start_date'),get_field('event_end_date'));
+            } else{
+              echo get_field('event_start_date');
+            }
+            if (get_field('event_type') == 'onetime') {
+                echo '<br>';
+                echo get_field('event_start_time');
+            }
+            if (get_field('event_end_time')) {
+                echo '&#8211;';
+                echo get_field('event_end_time');
+            }
+        echo '</strong>';
+        echo '</div>';
+    } elseif (get_field('event_type') == 'recurring') {
+        echo '<div class="event-dates item">';
+            echo '<div class="event-dates-content">';
+                echo get_field('event_recurrence');
+            echo '</div>';
+        echo '</div>';
+    }
+
+    $event_pricing_array = get_field('event_pricing');
+
+    if (get_field('event_pricing')):
+        echo '<div class="col-12">';
+            echo '<div class="event-pricing item">';
+                echo '<ul>';
+                    while (the_repeater_field('event_pricing')) :
+                        echo '<li>';
+                            echo '<strong>';
+                            if(!empty(the_sub_field('event_price_alternate'))) {
+                                if(the_sub_field('event_price_alternate') == 'Other'){
+                                    echo the_sub_field('event_price_alternate_other');
+                                }else{
+                                    echo the_sub_field('event_price_alternate');
+                                }
+                                echo '</strong>';         
+                            }else{
+                                echo the_sub_field('event_price');
+                                echo '</strong> ';
+                                echo the_sub_field('event_price_label');
+                            }
+                        echo '</li>';
+                    endwhile;
+                echo '</ul>';
+            echo '</div>';
+        echo '</div>';
+    endif;
+
+    $status = evalEventStatus(get_field('event_start_date'),get_field('event_end_date'));
+    if ($status) {
+        $status = 'past';
+    }
+    if (get_field('event_ticket_url') && !$status):
+        echo '<div class="col-12">';
+            echo '<div class="buttons">';
+                echo '<a href="'.get_field('event_ticket_url').'" target="_blank" class="button red">'.get_field('event_ticket_button_label').'</a>';
+            echo '</div>';
+        echo '</div>';
+    endif;
+}

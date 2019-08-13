@@ -30,7 +30,9 @@ $f = featuredImageSrc();
 					//for events, print event details
 					if (get_post_type() == 'event'):
 						echo '<div class="event-details">';
-						get_template_part( 'templates/content-event-details');
+						//this is not working on godaddy
+						//get_template_part( 'templates/content-event-details');
+						getEventDetails();
 						echo '</div>';
 					endif;
 				?>

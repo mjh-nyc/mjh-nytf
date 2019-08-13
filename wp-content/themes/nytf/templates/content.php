@@ -8,7 +8,8 @@
     			<?php
     			//print event details if it's an event
     			if ( get_post_type() =='event'){
-    				get_template_part( 'templates/content-event-details');
+    				//get_template_part( 'templates/content-event-details');
+    				getEventDetails();
     			}
     			?>
  		 	<div class="entry-summary">

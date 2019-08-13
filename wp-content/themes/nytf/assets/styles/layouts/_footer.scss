@@ -69,14 +69,9 @@ footer {
 		background-color: $brand-secondary;
 		padding-top: 2rem;
 		padding-bottom: 2rem;
-		.row {
-			align-items: center;
+		.col-md-8 {
 			color: $white;
-			a, p {
-				@include breakpoint(medium) {
-					margin: 0;
-				}
-			}
+			text-align: center;
 		}
 	}
 }

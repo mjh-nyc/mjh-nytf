@@ -7,11 +7,15 @@
   <section class="announcement">
     <div class="container">
       <div class="row ">
-        <div class="col-md-6">
-          <p><?php echo $announcement; ?></p>
+        <div class="col-md-2">
+         
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
+          <p><?php echo $announcement; ?></p>
           <?php echo '<a href="'.$announcement_button_url.'" class="button red">'.$announcement_button_label.'</a>'; ?>
+        </div>
+        <div class="col-md-2">
+          
         </div>
       </div>
     </div>

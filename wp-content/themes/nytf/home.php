@@ -265,10 +265,50 @@
 				    if ($upcoming_events) {
 				    	foreach ($upcoming_events as $event) {
 				    		echo '<article '; post_class(); echo '>';
-				    			set_query_var( 'item_id', $event->ID );
-				    			get_template_part( 'templates/content-event-card');
-				    			//get_template_part('templates/content-event-card', 'header');
-		        				//include $theme_uri.'/templates/content-event-card.php?item_id='.$event->ID;
+				    			//this is not working on godaddy, so hard coding the card below
+				    			//set_query_var( 'item_id', $event->ID );
+				    			//get_template_part( 'templates/content-event-card');
+				    			$item_id = $event->ID;
+				    		?>
+				    		<!-- You must pass the post ID to this template as $item_id -->
+							<div class="event-card slide-card">
+							  <a href="<?php echo get_the_permalink($item_id); ?>" class="card-link">
+							    <div class="card-image lazy" data-src="<?php echo featuredImageSrc('medium',$item_id); ?>">
+							      <span class="sr-only"><?php echo featuredImageAlt($item_id); ?></span>
+							      <span class="card-category" <?php if (get_field('event_type',$item_id) == 'recurring') { echo 'style="background:#033EFB"'; } ?>><?php echo postTermsString($item_id,'event_category'); ?></span>
+							    </div>
+							    <div class="info">
+							      <h4 class="card-title"><?php echo truncateString(get_the_title($item_id), 20); ?></h4>
+							    </div>
+							    <div class="details">
+							      <?php if (get_field('event_start_date',$item_id)){ ?>
+								      <div class="event-dates">
+								         <?php 
+							              if (get_field('event_end_date',$item_id) && get_field('event_type',$item_id) == 'ongoing') {
+							                echo date('l',strtotime(App::get_field('event_start_date',$item_id)));
+							                echo '<br>';
+							                echo cleanDateOutput(get_field('event_start_date',$item_id),get_field('event_end_date',$item_id));
+								          	} else {
+							                echo date('l',strtotime(get_field('event_start_date',$item_id)));
+							                echo '<br>';
+							                echo get_field('event_start_date',$item_id);
+								          	}
+								          	if (get_field('event_type',$item_id) == 'onetime' && get_field('event_start_time',$item_id)) {
+							                echo ' / ';
+							                echo get_field('event_start_time',$item_id);
+							              }
+									        ?>
+								      </div>
+							      <?php
+							        } elseif (get_field('event_type',$item_id) == 'recurring') { ?>
+							      	     <div class="event-dates event-recurrence">
+							      		      <i class="fa fa-bullseye" aria-hidden="true"></i><?php echo get_field('event_recurrence',$item_id); ?>
+							      	     </div>
+								   <?php } ?>
+							    </div>
+							  </a>
+							</div>
+				    		<?php
 		      				echo '</article>';
 				    	}
 				    }

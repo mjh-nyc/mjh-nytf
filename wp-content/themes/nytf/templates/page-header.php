@@ -10,21 +10,23 @@ $f = featuredImageSrc();
 				<h1 class="entry-title"><?php echo Titles\title(); ?></h1>
 				<?php
 					$subtitle = get_field('subtitle');
-					if ($subtitle) {
+					if ($subtitle && (!is_archive() && !is_search())) {
 						echo '<h4>';
 						echo $subtitle;
 						echo '</h4>';
 					}
 				?>
 				<?php
-					$header_buttons = get_field('header_buttons');
-					if ($header_buttons) {
-						echo '<div class="header-buttons">';
-						foreach ($header_buttons as $button):
-							echo '<a href="'.$button['header_button_url'].'" class="button '.$button['header_button_class'].'">'.$button['header_button_label'].'</a>';
-						endforeach;
-						echo '</div>';
-					}
+					if (!is_archive() && !is_search()):
+						$header_buttons = get_field('header_buttons');
+						if ($header_buttons) {
+							echo '<div class="header-buttons">';
+							foreach ($header_buttons as $button):
+								echo '<a href="'.$button['header_button_url'].'" class="button '.$button['header_button_class'].'">'.$button['header_button_label'].'</a>';
+							endforeach;
+							echo '</div>';
+						}
+					endif;
 				?>
 			</div>
 		</div>

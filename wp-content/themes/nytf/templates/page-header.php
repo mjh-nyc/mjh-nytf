@@ -27,6 +27,12 @@ $f = featuredImageSrc();
 							echo '</div>';
 						}
 					endif;
+					//for events, print event details
+					if (get_post_type() == 'event'):
+						echo '<div class="event-details">';
+						get_template_part( 'templates/content-event-details');
+						echo '</div>';
+					endif;
 				?>
 			</div>
 		</div>

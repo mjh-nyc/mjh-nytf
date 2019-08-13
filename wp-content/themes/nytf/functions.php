@@ -66,59 +66,6 @@ if( function_exists('acf_add_options_page') ) {
     ));*/
 }
 
-/*Security measures*/
-if(function_exists('remove_action')) {
-	remove_action('wp_head', 'wp_generator');
-}
-
-
-// Redefine password from name and email, globally
-add_filter( 'wp_mail_from', 'wpse_new_mail_from' );
-function wpse_new_mail_from( $old ) {
-    return get_option('admin_email');
-}
-
-add_filter('wp_mail_from_name', 'wpse_new_mail_from_name');
-function wpse_new_mail_from_name( $old ) {
-    return get_option('blogname');
-}
-//end
-
-function my_login_logo_url() {
-    return home_url();
-}
-add_filter( 'login_headerurl', 'my_login_logo_url' );
-
-function my_login_logo_url_title() {
-    return get_option('blogname');
-}
-add_filter( 'login_headertitle', 'my_login_logo_url_title' );
-
-//change the default WP login screen logo
-function my_login_logo() { ?>
-    <style type="text/css">
-        #login {
-			width:50%  !important;
-		}
-		.login h1 a {
-            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/dist/images/nycamp-logo.png) !important;
-            padding-bottom: 30px !important;
-			background-size:100% auto !important;
-			width:340px !important;
-			height:130px !important;
-        }
-		@media (max-width: 768px) {
-		  #login { width:100%;}
-		  .login h1 a {
-		  	width:240px !important;
-		  }
-		}
-    </style>
-<?php }
-add_action( 'login_enqueue_scripts', 'my_login_logo', 1 );
-
-
-
 // Check if page is direct child
 function is_child( $post_id ) { 
 	
@@ -365,4 +312,45 @@ function cleanDateOutput($start_date, $end_date){
         $date_output = date('M j', strtotime($start_date))." &#8211; ".date('M j, Y', strtotime($end_date));
     }
     return $date_output;
+}
+
+
+/**
+ * Evaluate if an event is PAST, returns true if past, requires start and end dates
+ *
+ * @return bool
+ */
+function evalEventStatus($start_date, $end_date){
+    return evalDateStatus($start_date, $end_date);
+}
+/**
+ * Evaluate if date is in the past
+ *
+ * @return bool
+ */
+function evalDateStatus($start_date, $end_date){
+    //convert to timestamp 
+    $start_date = strtotime($start_date);
+    $end_date = strtotime($end_date);
+    date_default_timezone_set('America/New_York');
+    $now = strtotime('yesterday 11:59:59');
+    if (!$start_date && !$end_date) {
+        return false;
+    } elseif($start_date == $end_date || !$end_date){
+       //just look at the start date
+        if ($now > $start_date) {
+            return true; //passed
+        } else {
+            return false;
+        }
+    } else {
+       //if the end date is in the future, this is not a past event
+        //use the end date for comparison
+        if ($now > $end_date) {
+            return true; //passed
+
+        } else {
+            return false;
+        }
+    }
 }

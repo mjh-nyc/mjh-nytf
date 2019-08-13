@@ -8,25 +8,7 @@
     			<?php
     			//print event details if it's an event
     			if ( get_post_type() =='event'){
-    				if (get_field('event_start_date')) {
-    					echo '<div class="entry-meta">';
-    					echo '<strong>';
-				            if (get_field('event_end_date')) {
-				              echo cleanDateOutput(get_field('event_start_date'),get_field('event_end_date'));
-				            } else{
-				              echo get_field('event_start_date');
-				            }
-				            if (get_field('event_type') == 'onetime') {
-				            	echo '<br>';
-				            	echo get_field('event_start_time');
-				            }
-				            if (get_field('event_end_time')) {
-				                echo '&#8211;';
-				                echo get_field('event_end_time');
-				            }
-			            echo '</strong>';
-			            echo '</div>';
-    				}
+    				get_template_part( 'templates/content-event-details');
     			}
     			?>
  		 	<div class="entry-summary">

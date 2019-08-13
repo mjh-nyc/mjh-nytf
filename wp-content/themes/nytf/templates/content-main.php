@@ -74,6 +74,28 @@ endif;
 	</div>
 	<div class="col-md-<?php echo $col2; ?>">
     	<div class="entry-content">
+    		<?php
+    		//if it's an event, also add location (if any)
+    		if ( get_post_type() =='event'){
+    			if (get_field('event_has_location')) {
+          			echo '<h3>'.__('Event location:', 'sage').'</h3>';
+          			echo '<div class="event-location item">';
+          				echo '<div>';
+          					 echo get_field('event_location');
+          				echo '</div>';
+						echo '<div>';
+          					echo get_field('event_street');
+          					echo '<span style="display: block;">';
+          					echo get_field('event_secondary_street');
+          					echo '</span>';
+          				echo '</div>';
+          				echo '<div>';
+            				echo get_field('event_city').', '.get_field('event_state').' '.get_field('event_zip_code');
+            			echo '</div>';
+            		echo '</div>';
+          		}
+          	}
+        	?>
     		<?php the_content(); ?>
     	</div>
     </div>

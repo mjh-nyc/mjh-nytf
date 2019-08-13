@@ -164,9 +164,9 @@ function my_login_logo() {
       width:50%  !important;
     }
     .login h1 a {
-            background-image: url('<?php echo $logo[0]; ?>') !important;
+      background-image: url('<?php echo $logo[0]; ?>') !important;
       background-size:100% auto !important;
-      width:340px !important;
+      width:261px !important;
       height:auto
         }
     @media (max-width: 768px) {

@@ -363,6 +363,14 @@
 .entry-meta {
 	margin-bottom: 1rem;
 }
+
+.event-location {
+	margin-bottom: 2rem;
+}
+
+.event-pricing {
+	@include listReset();
+}
 /**********************************************/
 /*************** //END SECODNDARY PAGE ***************/
 

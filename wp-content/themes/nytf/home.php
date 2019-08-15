@@ -46,7 +46,17 @@
       		</div>
     	</div>
     </section>
-	
+
+	<section class="mobile-header-buttons">
+		 <div class="container">
+		 	<div class="row">
+		 		<div class="col-md-12 mobile-header-buttons-placeholder">
+		 			<!--move buttons here in mobile view -->
+		 		</div>
+		 	</div>
+		 </div>
+	</section>
+    
     <section id="about-us" class="about-us">
     	<?php 
 			$about_us_header = get_field('about_us_header', 'option');
@@ -134,191 +144,198 @@
 		</div>
 	</section>
 
-	<section class="events">
-		<div class="container">
-			<div class="events heading row">
-				<h2><?php echo get_field('featured_events_header', 'option'); ?></h2>
+
+	<?php
+	//EVENTS LOGIC
+	function upcomingEvents() {
+		$total_posts = 3;
+        $currentDate = strtotime('yesterday 11:59');
+        $pParamHash = array('post_type' => 'event','posts_per_page' => $total_posts);
+        $pParamHash['meta_query'] =  array(
+            'relation'      => 'AND',
+             array(
+                'relation'      => 'OR',
+                '0'=> array(
+                    'key'	 	=> 'event_start_date',
+                    'value'	  	=> date('Y-m-d H:i:s', $currentDate),
+                    'type'		=> 'DATETIME',
+                    'compare' 	=> '>',
+                ),
+                '1'=> array(
+                    'relation'      => 'AND',
+                    '0'=> array(
+                        'key'	 	=> 'event_end_date',
+                        'value'	  	=> date('Y-m-d H:i:s', $currentDate),
+                        'type'		=> 'DATETIME',
+                        'compare' 	=> '>',
+                    ),
+                    '1'=> array(
+                        'key'	 	=> 'event_type',
+                        'compare' 	=> '=',
+                        'value'     => 'ongoing'
+                    )
+                ),
+            )
+        );
+        $eventsHash = $events = array();
+        // check if the featured_events repeater field has event to pull out
+        if( have_rows('featured_events_repeater','option') ){
+            $eventIdHash = array();
+            $eventsRepeater = get_field('featured_events_repeater','option');
+            foreach($eventsRepeater as $featureEvent){
+                $eventIdHash[] = $featureEvent['event_item'];
+            }
+            $pParamHash['post__in'] = $eventIdHash;
+            $events = new WP_Query($pParamHash);
+            if(empty($events->posts)){
+                unset($pParamHash['post__in']);
+            }else{
+                foreach($events->posts as $event_posts){
+                    $eventsHash[] = $event_posts;
+                }
+                $pParamHash['posts_per_page'] = $total_posts - $events->post_count;
+                unset($pParamHash['post__in']);
+            }
+            unset($events);
+            $pParamHash['post__not_in'] = $eventIdHash;
+        }
+
+        // if posts per page is still above 0, add on remainder events of total events to display
+        if( $pParamHash['posts_per_page'] > 0  ){
+            $pParamHash['meta_key']	= 'event_start_date';
+            $pParamHash['orderby']	= 'meta_value';
+            $pParamHash['order']	= 'ASC';
+            $events = new WP_Query( $pParamHash);
+            if($events->posts){
+                foreach($events->posts as $event_posts){
+                    $eventsHash[] = $event_posts;
+                }
+            }
+        }
+        if( !empty( $eventsHash ) ) {
+            return eventSortByTime($eventsHash);
+        } else {
+        	return false;
+        }
+    }
+
+    function eventSortByTime($eventsHash) {
+        $events = $eventsHash;
+        if(!empty($events)){
+            $eventHash = array();
+            foreach($events AS $event){
+                $event_type = get_field( "event_type", $event->ID );
+                switch($event_type){
+                    // Always set date/time keys to zero since it is top of the list
+                    case 'recurring':
+                        $eventHash[0][0][] = $event;
+                    break;
+                    // Set array hash to date and time for the keys, then sort by time key
+                    case'onetime':
+                        $event_start_date = get_field( "event_start_date", $event->ID );
+                        $event_start_time = get_field( "event_start_time", $event->ID );
+                        if(empty($event_start_time)){
+                            $event_start_time=0;
+                        }
+                        $eventHash[strtotime($event_start_date)][strtotime($event_start_time)][]= $event;
+                        ksort($eventHash[strtotime($event_start_date)]);
+                    break;
+                    // Set array hash to date only for the keys, then sort by time key, which is set to zero for ongoing
+                    case'ongoing':
+                        $event_start_date = get_field( "event_start_date", $event->ID );
+                        $eventHash[strtotime($event_start_date)][0][]= $event;
+                        ksort($eventHash[strtotime($event_start_date)]);
+                    break;
+                }
+            }
+            // Set up posts hash
+            $eventsPostsHash = array();
+            foreach($eventHash AS $key => $eventsSorted){
+                foreach($eventsSorted AS $eventsSortedTime){
+                    if(count($eventsSortedTime) > 1){
+                        foreach($eventsSortedTime As $eventsSortedTimeSame){
+                            $eventsPostsHash[] = $eventsSortedTimeSame;
+                        }
+                    }else{
+                        $eventsPostsHash[] = array_shift($eventsSortedTime);
+                    }
+                }
+            }
+            return $eventsPostsHash;
+        }
+    } ?>
+
+    <?php
+    $upcoming_events = upcomingEvents();
+	if ($upcoming_events && get_field('featured_events_repeater','option')) { ?>
+		<section class="events">
+			<div class="container">
+				<div class="events heading row">
+					<h2><?php echo get_field('featured_events_header', 'option'); ?></h2>
+				</div>
+				<div class="events listing row">
+					
+					<?php
+					    //PRINT events if any found
+					    //$upcoming_events = upcomingEvents();
+					    //if ($upcoming_events) {
+					    	foreach ($upcoming_events as $event) {
+					    		echo '<article '; post_class(); echo '>';
+					    			//this is not working on godaddy, so hard coding the card below
+					    			//set_query_var( 'item_id', $event->ID );
+					    			//get_template_part( 'templates/content-event-card');
+					    			$item_id = $event->ID;
+					    		?>
+					    		<!-- You must pass the post ID to this template as $item_id -->
+								<div class="event-card slide-card">
+								  <a href="<?php echo get_the_permalink($item_id); ?>" class="card-link">
+								    <div class="card-image lazy" data-src="<?php echo featuredImageSrc('medium',$item_id); ?>">
+								      <span class="sr-only"><?php echo featuredImageAlt($item_id); ?></span>
+								      <span class="card-category" <?php if (get_field('event_type',$item_id) == 'recurring') { echo 'style="background:#033EFB"'; } ?>><?php echo postTermsString($item_id,'event_category'); ?></span>
+								    </div>
+								    <div class="info">
+								      <h4 class="card-title"><?php echo truncateString(get_the_title($item_id), 20); ?></h4>
+								    </div>
+								    <div class="details">
+								      <?php if (get_field('event_start_date',$item_id)){ ?>
+									      <div class="event-dates">
+									         <?php 
+								              if (get_field('event_end_date',$item_id) && get_field('event_type',$item_id) == 'ongoing') {
+								                echo date('l',strtotime(App::get_field('event_start_date',$item_id)));
+								                echo '<br>';
+								                echo cleanDateOutput(get_field('event_start_date',$item_id),get_field('event_end_date',$item_id));
+									          	} else {
+								                echo date('l',strtotime(get_field('event_start_date',$item_id)));
+								                echo '<br>';
+								                echo get_field('event_start_date',$item_id);
+									          	}
+									          	if (get_field('event_type',$item_id) == 'onetime' && get_field('event_start_time',$item_id)) {
+								                echo ' / ';
+								                echo get_field('event_start_time',$item_id);
+								              }
+										        ?>
+									      </div>
+								      <?php
+								        } elseif (get_field('event_type',$item_id) == 'recurring') { ?>
+								      	     <div class="event-dates event-recurrence">
+								      		      <i class="fa fa-bullseye" aria-hidden="true"></i><?php echo get_field('event_recurrence',$item_id); ?>
+								      	     </div>
+									   <?php } ?>
+								    </div>
+								  </a>
+								</div>
+					    		<?php
+			      				echo '</article>';
+					    	}
+					    //}
+					?>
+				</div>
+				<div class="events row see-all">
+					<a href="/events" class="button black"><?php _e('See all events', 'sage'); ?></a>
+				</div>
 			</div>
-			<div class="events listing row">
-				<?php
-
-					function upcomingEvents() {
-						$total_posts = 3;
-				        $currentDate = strtotime('yesterday 11:59');
-				        $pParamHash = array('post_type' => 'event','posts_per_page' => $total_posts);
-				        $pParamHash['meta_query'] =  array(
-				            'relation'      => 'AND',
-				             array(
-				                'relation'      => 'OR',
-				                '0'=> array(
-				                    'key'	 	=> 'event_start_date',
-				                    'value'	  	=> date('Y-m-d H:i:s', $currentDate),
-				                    'type'		=> 'DATETIME',
-				                    'compare' 	=> '>',
-				                ),
-				                '1'=> array(
-				                    'relation'      => 'AND',
-				                    '0'=> array(
-				                        'key'	 	=> 'event_end_date',
-				                        'value'	  	=> date('Y-m-d H:i:s', $currentDate),
-				                        'type'		=> 'DATETIME',
-				                        'compare' 	=> '>',
-				                    ),
-				                    '1'=> array(
-				                        'key'	 	=> 'event_type',
-				                        'compare' 	=> '=',
-				                        'value'     => 'ongoing'
-				                    )
-				                ),
-				            )
-				        );
-				        $eventsHash = $events = array();
-				        // check if the featured_events repeater field has event to pull out
-				        if( have_rows('featured_events_repeater','option') ){
-				            $eventIdHash = array();
-				            $eventsRepeater = get_field('featured_events_repeater','option');
-				            foreach($eventsRepeater as $featureEvent){
-				                $eventIdHash[] = $featureEvent['event_item'];
-				            }
-				            $pParamHash['post__in'] = $eventIdHash;
-				            $events = new WP_Query($pParamHash);
-				            if(empty($events->posts)){
-				                unset($pParamHash['post__in']);
-				            }else{
-				                foreach($events->posts as $event_posts){
-				                    $eventsHash[] = $event_posts;
-				                }
-				                $pParamHash['posts_per_page'] = $total_posts - $events->post_count;
-				                unset($pParamHash['post__in']);
-				            }
-				            unset($events);
-				            $pParamHash['post__not_in'] = $eventIdHash;
-				        }
-
-				        // if posts per page is still above 0, add on remainder events of total events to display
-				        if( $pParamHash['posts_per_page'] > 0  ){
-				            $pParamHash['meta_key']	= 'event_start_date';
-				            $pParamHash['orderby']	= 'meta_value';
-				            $pParamHash['order']	= 'ASC';
-				            $events = new WP_Query( $pParamHash);
-				            if($events->posts){
-				                foreach($events->posts as $event_posts){
-				                    $eventsHash[] = $event_posts;
-				                }
-				            }
-				        }
-				        if( !empty( $eventsHash ) ) {
-				            return eventSortByTime($eventsHash);
-				        } else {
-				        	return false;
-				        }
-				    }
-
-			        function eventSortByTime($eventsHash) {
-				        $events = $eventsHash;
-				        if(!empty($events)){
-				            $eventHash = array();
-				            foreach($events AS $event){
-				                $event_type = get_field( "event_type", $event->ID );
-				                switch($event_type){
-				                    // Always set date/time keys to zero since it is top of the list
-				                    case 'recurring':
-				                        $eventHash[0][0][] = $event;
-				                    break;
-				                    // Set array hash to date and time for the keys, then sort by time key
-				                    case'onetime':
-				                        $event_start_date = get_field( "event_start_date", $event->ID );
-				                        $event_start_time = get_field( "event_start_time", $event->ID );
-				                        if(empty($event_start_time)){
-				                            $event_start_time=0;
-				                        }
-				                        $eventHash[strtotime($event_start_date)][strtotime($event_start_time)][]= $event;
-				                        ksort($eventHash[strtotime($event_start_date)]);
-				                    break;
-				                    // Set array hash to date only for the keys, then sort by time key, which is set to zero for ongoing
-				                    case'ongoing':
-				                        $event_start_date = get_field( "event_start_date", $event->ID );
-				                        $eventHash[strtotime($event_start_date)][0][]= $event;
-				                        ksort($eventHash[strtotime($event_start_date)]);
-				                    break;
-				                }
-				            }
-				            // Set up posts hash
-				            $eventsPostsHash = array();
-				            foreach($eventHash AS $key => $eventsSorted){
-				                foreach($eventsSorted AS $eventsSortedTime){
-				                    if(count($eventsSortedTime) > 1){
-				                        foreach($eventsSortedTime As $eventsSortedTimeSame){
-				                            $eventsPostsHash[] = $eventsSortedTimeSame;
-				                        }
-				                    }else{
-				                        $eventsPostsHash[] = array_shift($eventsSortedTime);
-				                    }
-				                }
-				            }
-				            return $eventsPostsHash;
-				        }
-				    }
-
-				    //PRINT events if any found
-				    $upcoming_events = upcomingEvents();
-				    if ($upcoming_events) {
-				    	foreach ($upcoming_events as $event) {
-				    		echo '<article '; post_class(); echo '>';
-				    			//this is not working on godaddy, so hard coding the card below
-				    			//set_query_var( 'item_id', $event->ID );
-				    			//get_template_part( 'templates/content-event-card');
-				    			$item_id = $event->ID;
-				    		?>
-				    		<!-- You must pass the post ID to this template as $item_id -->
-							<div class="event-card slide-card">
-							  <a href="<?php echo get_the_permalink($item_id); ?>" class="card-link">
-							    <div class="card-image lazy" data-src="<?php echo featuredImageSrc('medium',$item_id); ?>">
-							      <span class="sr-only"><?php echo featuredImageAlt($item_id); ?></span>
-							      <span class="card-category" <?php if (get_field('event_type',$item_id) == 'recurring') { echo 'style="background:#033EFB"'; } ?>><?php echo postTermsString($item_id,'event_category'); ?></span>
-							    </div>
-							    <div class="info">
-							      <h4 class="card-title"><?php echo truncateString(get_the_title($item_id), 20); ?></h4>
-							    </div>
-							    <div class="details">
-							      <?php if (get_field('event_start_date',$item_id)){ ?>
-								      <div class="event-dates">
-								         <?php 
-							              if (get_field('event_end_date',$item_id) && get_field('event_type',$item_id) == 'ongoing') {
-							                echo date('l',strtotime(App::get_field('event_start_date',$item_id)));
-							                echo '<br>';
-							                echo cleanDateOutput(get_field('event_start_date',$item_id),get_field('event_end_date',$item_id));
-								          	} else {
-							                echo date('l',strtotime(get_field('event_start_date',$item_id)));
-							                echo '<br>';
-							                echo get_field('event_start_date',$item_id);
-								          	}
-								          	if (get_field('event_type',$item_id) == 'onetime' && get_field('event_start_time',$item_id)) {
-							                echo ' / ';
-							                echo get_field('event_start_time',$item_id);
-							              }
-									        ?>
-								      </div>
-							      <?php
-							        } elseif (get_field('event_type',$item_id) == 'recurring') { ?>
-							      	     <div class="event-dates event-recurrence">
-							      		      <i class="fa fa-bullseye" aria-hidden="true"></i><?php echo get_field('event_recurrence',$item_id); ?>
-							      	     </div>
-								   <?php } ?>
-							    </div>
-							  </a>
-							</div>
-				    		<?php
-		      				echo '</article>';
-				    	}
-				    }
-				?>
-			</div>
-			<div class="events row see-all">
-				<a href="/events" class="button black"><?php _e('See all events', 'sage'); ?></a>
-			</div>
-		</div>
-	</section>
+		</section>
+	<?php } ?>
 
 	<section class="callout features">
 		<div class="container-fluid">

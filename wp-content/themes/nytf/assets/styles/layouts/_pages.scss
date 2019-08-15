@@ -38,20 +38,27 @@
 .home-wrapper {
 	section {
 		&.fullscreen {
-			min-height:100vh;
+			@include breakpoint(medium) {
+				min-height:100vh;
+			}
 			background-size:cover;
 			background-repeat:none;
 			background-position:bottom center;
 		}
 
 		.welcome-content-wrapper {
-			height: 100vh;
+			@include breakpoint(medium) {
+				height: 100vh;
+			}
 		    justify-content: center;
 		    align-items: stretch;
 		}
 		.welcome-content {
 			position: relative;
-			align-self: center;
+			align-self: flex-end;
+			@include breakpoint(medium) {
+				align-self: center;
+			}
 		}
 
 		&.welcome {
@@ -72,12 +79,16 @@
 				color: $white; /* this can be overwritten via ACF setting */
 			}
 			.buttons {
-				display: flex;
-				flex-wrap: wrap;
-				a {
-					&:nth-child(3) {
-						flex-grow: 0;
-						flex-basis: 100%;
+				width: 100%;
+				@include breakpoint(medium) {
+					display: flex;
+					flex-wrap: wrap;
+					width: auto;
+					a {
+						&:nth-child(3) {
+							flex-grow: 0;
+							flex-basis: 100%;
+						}
 					}
 				}
 			}
@@ -107,6 +118,15 @@
  						-o-animation: bounce 2s infinite;
 					}
 				}
+			}
+		}
+
+		&.mobile-header-buttons {
+			display: block;
+			background: $black;
+			padding-bottom: 1rem;
+			@include breakpoint(medium) {
+				display: none;
 			}
 		}
 		
@@ -152,7 +172,10 @@
 					background-color: $black;
 					color: $white !important;
 					padding-top: 1rem;
-					padding-bottom: 2rem;
+					padding-bottom: 8rem;
+					@include breakpoint(medium) {
+						padding-bottom: 2rem;
+					}
 					&.left {
 						.feature-content-wrapper {
 							@include breakpoint(medium) {

@@ -40,8 +40,21 @@
 
 
         //sticky header
-        //$("header").stick_in_parent();
+        $("header.banner").stick_in_parent();
 
+        /*$(window).scroll(function(){
+          var sticky = $('header.banner');
+          var scroll = $(window).scrollTop();
+          //get header height:
+          var hh = sticky.height();
+
+          if (scroll >= hh) {
+            sticky.addClass('is_stuck');
+          } else {
+            sticky.removeClass('is_stuck');
+          }
+        });*/
+        
 
         //function to scroll to section
     		$('a.scroll').click(function() {
@@ -69,16 +82,30 @@
 
       finalize: function() {
         //set buttons width
-        if ($('.buttons').length > 0) {
-          var maxWidth = 0;
-          var countLimit = 2;
-          $('.buttons a').each(function(i, index) {
-            if (i < countLimit) {
-              maxWidth += parseInt($(this).outerWidth()+40, 10);
+        var setHeaderButtonAlignment = function() {
+          if ($(window).width() > 768) {
+            if ($('.buttons').length > 0) {
+              var maxWidth = 0;
+              var countLimit = 2;
+              $('.buttons a').each(function(i, index) {
+                if (i < countLimit) {
+                  maxWidth += parseInt($(this).outerWidth()+40, 10);
+                }
+              });
+              $('.buttons').css('width', maxWidth-40+'px');
             }
-          });
-          $('.buttons').css('width', maxWidth-40+'px');
-        }
+           }
+         };
+
+        var setHeaderButtonsPos = function(){
+          if ($(window).width() > 768) {
+            //move buttons to welcome-content div
+            $('.buttons').appendTo('.welcome-content');
+          } else {
+            //move buttons to mobile view div
+            $('.buttons').appendTo('.mobile-header-buttons-placeholder');
+          }
+        };
 
         //maintain aspect ratio btwn width and height on features 4:3
         function setFeatureRatio(){
@@ -111,6 +138,8 @@
         function doneResizing(){
           setFeatureOffset();
           setFeatureRatio();
+          setHeaderButtonsPos();
+          setHeaderButtonAlignment();
         }
         var id;
         $(window).on('resize', function(){
@@ -119,8 +148,7 @@
         });
         
         //also fire on load: 
-         setFeatureOffset();
-         setFeatureRatio();
+         doneResizing();
 
       }
     },

@@ -159,11 +159,12 @@ h2 {
 }
 
 h3 {
-	font-size:1.3rem;
-	line-height:1.8rem;
+	font-size:1.2rem;
+	line-height:1.4rem;
 	padding: 1rem 0;
 	@include breakpoint(medium) {
        font-size:1.3rem;
+       line-height:1.8rem;
     }
 }
 h4 {
@@ -171,6 +172,12 @@ h4 {
 	line-height:1.5rem;
 }
 
+/*.is_stuck {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+}*/
 
 .highlight {
     display: inline;

@@ -15,13 +15,6 @@ use Roots\Sage\Wrapper;
     $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
   ?>
   
-  <meta property="og:title" content="<?php bloginfo('name'); ?>"/>
-  <meta property="og:url" content="<?php bloginfo('url'); ?>"/>
-  <meta property="og:site_name" content="<?php bloginfo('name'); ?>"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:description" name="description" content="<?php bloginfo('description'); ?>">
-  <meta property="og:image" content="<?php echo $theme_uri.'/dist/images/nytf-share.png'; ?>" />
-  
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

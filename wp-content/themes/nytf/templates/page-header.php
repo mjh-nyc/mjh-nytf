@@ -22,7 +22,7 @@ $f = featuredImageSrc();
 						if ($header_buttons) {
 							echo '<div class="header-buttons">';
 							foreach ($header_buttons as $button):
-								echo '<a href="'.$button['header_button_url'].'" class="button '.$button['header_button_class'].'">'.$button['header_button_label'].'</a>';
+								echo '<a href="'.$button['header_button_url'][url].'" class="button '.$button['header_button_class'].'">'.$button['header_button_label'].'</a>';
 							endforeach;
 							echo '</div>';
 						}

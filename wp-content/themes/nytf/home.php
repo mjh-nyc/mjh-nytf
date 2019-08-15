@@ -17,7 +17,7 @@
       					$buttons = get_field('buttons','option');
 
       					if ($press_quote) {
-      						echo '<p style="color:'.$text_color.'">'.$press_quote.'</p>';
+      						echo '<p class="press-quote" style="color:'.$text_color.'">'.$press_quote.'</p>';
       					}
       					if ($welcome_screen_message) {
       						echo '<h1 style="color:'.$text_color.'">'.$welcome_screen_message.'</h1>';
@@ -67,7 +67,7 @@
 		?>
     	<div class="container">
     		<div class="row">
-    			<div class="col-md-6">
+    			<div class="col-md-6 about-content">
     				<?php
     					if ($about_us_header) {
     						echo '<h3>'.$about_us_header.'</h3>';
@@ -80,7 +80,7 @@
     					}
     				?>
     			</div>
-    			<div class="col-md-6">
+    			<div class="col-md-6 newsletter-content">
     				<?php
     					if ($newsletter_signup_header) {
     						echo '<h3>'.$newsletter_signup_header.'</h3>';

@@ -55,9 +55,11 @@
 		}
 		.welcome-content {
 			position: relative;
-			align-self: flex-end;
+			align-self: flex-start;
+			padding-bottom: 50%;
 			@include breakpoint(medium) {
 				align-self: center;
+				padding-bottom: 0;
 			}
 		}
 
@@ -77,6 +79,12 @@
 			}
 			p {
 				color: $white; /* this can be overwritten via ACF setting */
+				&.press-quote {
+					display: none;
+					@include breakpoint(medium) {
+						display: block;
+					}
+				}
 			}
 			.buttons {
 				width: 100%;
@@ -134,6 +142,13 @@
 			background-color: $grey;
 			padding-top: 3rem;
 			padding-bottom: 3rem;
+
+			.about-content {
+				margin-bottom: 3rem;
+				@include breakpoint(medium) {
+					margin-bottom: 0;
+				}
+			}
 
 			.ctct-inline-form {
 				.ctct-form-embed.form_0 .ctct-form-defaults {

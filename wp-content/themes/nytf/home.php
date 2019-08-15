@@ -151,32 +151,6 @@
 		$total_posts = 3;
         $currentDate = strtotime('yesterday 11:59');
         $pParamHash = array('post_type' => 'event','posts_per_page' => $total_posts);
-        $pParamHash['meta_query'] =  array(
-            'relation'      => 'AND',
-             array(
-                'relation'      => 'OR',
-                '0'=> array(
-                    'key'	 	=> 'event_start_date',
-                    'value'	  	=> date('Y-m-d H:i:s', $currentDate),
-                    'type'		=> 'DATETIME',
-                    'compare' 	=> '>',
-                ),
-                '1'=> array(
-                    'relation'      => 'AND',
-                    '0'=> array(
-                        'key'	 	=> 'event_end_date',
-                        'value'	  	=> date('Y-m-d H:i:s', $currentDate),
-                        'type'		=> 'DATETIME',
-                        'compare' 	=> '>',
-                    ),
-                    '1'=> array(
-                        'key'	 	=> 'event_type',
-                        'compare' 	=> '=',
-                        'value'     => 'ongoing'
-                    )
-                ),
-            )
-        );
         $eventsHash = $events = array();
         // check if the featured_events repeater field has event to pull out
         if( have_rows('featured_events_repeater','option') ){
@@ -199,9 +173,34 @@
             unset($events);
             $pParamHash['post__not_in'] = $eventIdHash;
         }
-
         // if posts per page is still above 0, add on remainder events of total events to display
         if( $pParamHash['posts_per_page'] > 0  ){
+			$pParamHash['meta_query'] =  array(
+				'relation'      => 'AND',
+				array(
+					'relation'      => 'OR',
+					'0'=> array(
+						'key'	 	=> 'event_start_date',
+						'value'	  	=> date('Y-m-d H:i:s', $currentDate),
+						'type'		=> 'DATETIME',
+						'compare' 	=> '>',
+					),
+					'1'=> array(
+						'relation'      => 'AND',
+						'0'=> array(
+							'key'	 	=> 'event_end_date',
+							'value'	  	=> date('Y-m-d H:i:s', $currentDate),
+							'type'		=> 'DATETIME',
+							'compare' 	=> '>',
+						),
+						'1'=> array(
+							'key'	 	=> 'event_type',
+							'compare' 	=> '=',
+							'value'     => 'ongoing'
+						)
+					),
+				)
+			);
             $pParamHash['meta_key']	= 'event_start_date';
             $pParamHash['orderby']	= 'meta_value';
             $pParamHash['order']	= 'ASC';

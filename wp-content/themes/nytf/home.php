@@ -290,7 +290,7 @@
 								  <a href="<?php echo get_the_permalink($item_id); ?>" class="card-link">
 								    <div class="card-image lazy" data-src="<?php echo featuredImageSrc('medium',$item_id); ?>">
 								      <span class="sr-only"><?php echo featuredImageAlt($item_id); ?></span>
-								      <span class="card-category" <?php if (get_field('event_type',$item_id) == 'recurring') { echo 'style="background:#033EFB"'; } ?>><?php echo postTermsString($item_id,'event_category'); ?></span>
+								      <span class="card-category" <?php if (get_field('event_type',$item_id) == 'recurring') { echo 'style="background:#eb3d31"'; } ?>><?php echo postTermsString($item_id,'event_category'); ?></span>
 								    </div>
 								    <div class="info">
 								      <h4 class="card-title"><?php echo truncateString(get_the_title($item_id), 20); ?></h4>

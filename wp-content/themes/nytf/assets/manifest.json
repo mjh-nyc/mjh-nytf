@@ -22,6 +22,6 @@
     }
   },
   "config": {
-    "devUrl": "http://nycaids.local"
+    "devUrl": "http://nytf.local"
   }
 }

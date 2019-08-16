@@ -40,8 +40,8 @@
 
 
         //sticky header
-        //$("header.banner").stick_in_parent();
-        function createSticky(sticky) {
+        $("header.banner").stick_in_parent();
+        /*function createSticky(sticky) {
   
           if (typeof sticky !== "undefined") {
 
@@ -53,7 +53,7 @@
             });     
           }
         }
-        createSticky($("header.banner"));
+        createSticky($("header.banner"));*/
 
 
         

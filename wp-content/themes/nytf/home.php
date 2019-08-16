@@ -330,7 +330,7 @@
 								  <a href="<?php echo get_the_permalink($item_id); ?>" class="card-link">
 								    <div class="card-image lazy" data-src="<?php echo featuredImageSrc('medium',$item_id); ?>">
 								      <span class="sr-only"><?php echo featuredImageAlt($item_id); ?></span>
-								      <span class="card-category" <?php if (get_field('event_type',$item_id) == 'recurring') { echo 'style="background:#eb3d31"'; } ?>><?php echo postTermsString($item_id,'event_category'); ?></span>
+								      <span class="card-category"><?php echo postTermsString($item_id,'event_category'); ?></span>
 								    </div>
 								    <div class="info">
 								      <h4 class="card-title"><?php echo truncateString(get_the_title($item_id), 20); ?></h4>
@@ -357,7 +357,7 @@
 								      <?php
 								        } elseif (get_field('event_type',$item_id) == 'recurring') { ?>
 								      	     <div class="event-dates event-recurrence">
-								      		      <i class="fa fa-bullseye" aria-hidden="true"></i><?php echo get_field('event_recurrence',$item_id); ?>
+								      		      <i class="fa fa-bullseye" aria-hidden="true"></i> <?php echo get_field('event_recurrence',$item_id); ?>
 								      	     </div>
 									   <?php } ?>
 								    </div>
@@ -369,9 +369,10 @@
 					    //}
 					?>
 				</div>
+                <!--
 				<div class="events row see-all">
 					<a href="/events" class="button black"><?php _e('See all events', 'sage'); ?></a>
-				</div>
+				</div>-->
 			</div>
 		</section>
 	<?php } ?>

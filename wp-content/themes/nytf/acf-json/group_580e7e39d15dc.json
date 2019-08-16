@@ -519,6 +519,25 @@
             "endpoint": 0
         },
         {
+            "key": "field_5d5628e5f44a8",
+            "label": "Display featured events",
+            "name": "display_featured_events",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Hide\/show events on homepage",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_5d51cec4ce904",
             "label": "Featured events header",
             "name": "featured_events_header",
@@ -763,5 +782,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1565907025
+    "modified": 1565927737
 }

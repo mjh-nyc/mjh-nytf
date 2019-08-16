@@ -148,64 +148,42 @@
 	<?php
 	//EVENTS LOGIC
 	function upcomingEvents() {
-		$total_posts = 3;
-        $currentDate = strtotime('yesterday 11:59');
-        $pParamHash = array('post_type' => 'event','posts_per_page' => $total_posts);
-        $pParamHash['meta_query'] =  array(
-            'relation'      => 'AND',
-             array(
-                'relation'      => 'OR',
-                '0'=> array(
-                    'key'	 	=> 'event_start_date',
-                    'value'	  	=> date('Y-m-d H:i:s', $currentDate),
-                    'type'		=> 'DATETIME',
-                    'compare' 	=> '>',
-                ),
-                '1'=> array(
-                    'relation'      => 'AND',
-                    '0'=> array(
-                        'key'	 	=> 'event_end_date',
-                        'value'	  	=> date('Y-m-d H:i:s', $currentDate),
-                        'type'		=> 'DATETIME',
-                        'compare' 	=> '>',
-                    ),
-                    '1'=> array(
-                        'key'	 	=> 'event_type',
-                        'compare' 	=> '=',
-                        'value'     => 'ongoing'
-                    )
-                ),
-            )
-        );
-        $eventsHash = $events = array();
-        // check if the featured_events repeater field has event to pull out
-        if( have_rows('featured_events_repeater','option') ){
-            $eventIdHash = array();
-            $eventsRepeater = get_field('featured_events_repeater','option');
-            foreach($eventsRepeater as $featureEvent){
-                $event_type = get_field("event_type", $featureEvent['event_item']);
-                if($event_type == "recurring"){
-					$recurring_post = get_post($featureEvent['event_item']);
-					if(!empty($recurring_post)){
-						$eventsHash[] = $recurring_post;
-                    }
-                }
-				$eventIdHash[] = $featureEvent['event_item'];
-            }
-            $pParamHash['post__in'] = $eventIdHash;
-            $events = new WP_Query($pParamHash);
-            if(empty($events->posts)){
-                unset($pParamHash['post__in']);
-            }else{
-                foreach($events->posts as $event_posts){
-                    $eventsHash[] = $event_posts;
-                }
-                unset($pParamHash['post__in']);
-            }
-            unset($events);
-            $pParamHash['post__not_in'] = $eventIdHash;
-        }
-
+		$display_featured_events = get_field('display_featured_events','option');
+		if($display_featured_events) {
+			$total_posts = 3;
+			$currentDate = strtotime('yesterday 11:59');
+			$pParamHash = array('post_type' => 'event', 'posts_per_page' => $total_posts);
+			$pParamHash['meta_query'] = array('relation' => 'AND', array('relation' => 'OR', '0' => array('key' => 'event_start_date', 'value' => date('Y-m-d H:i:s', $currentDate), 'type' => 'DATETIME', 'compare' => '>',), '1' => array('relation' => 'AND', '0' => array('key' => 'event_end_date', 'value' => date('Y-m-d H:i:s', $currentDate), 'type' => 'DATETIME', 'compare' => '>',), '1' => array('key' => 'event_type', 'compare' => '=', 'value' => 'ongoing')),));
+			$eventsHash = $events = array();
+			// check if the featured_events repeater field has event to pull out
+			if (have_rows('featured_events_repeater', 'option')) {
+				$eventIdHash = array();
+				$eventsRepeater = get_field('featured_events_repeater', 'option');
+				foreach ($eventsRepeater as $featureEvent) {
+					$event_type = get_field("event_type", $featureEvent['event_item']);
+					if ($event_type == "recurring") {
+						$recurring_post = get_post($featureEvent['event_item']);
+						if (!empty($recurring_post)) {
+							$eventsHash[] = $recurring_post;
+						}
+					}
+					$eventIdHash[] = $featureEvent['event_item'];
+				}
+				$pParamHash['post__in'] = $eventIdHash;
+				$events = new WP_Query($pParamHash);
+				if (empty($events->posts)) {
+					unset($pParamHash['post__in']);
+				} else {
+					foreach ($events->posts as $event_posts) {
+						$eventsHash[] = $event_posts;
+					}
+					unset($pParamHash['post__in']);
+				}
+				unset($events);
+				$pParamHash['post__not_in'] = $eventIdHash;
+			}
+		}
+/*      //Commented out to only show events in featured_events repeater
         // if featured_events repeater field posts is empty
         if( empty($eventsHash)  ){
             //Get recurring events first since they don't have date associated
@@ -217,11 +195,6 @@
 					'key'	 	=> 'event_type',
 					'compare' 	=> '=',
 					'value'     => 'recurring'
-				),
-				'1'=> array(
-					'key'	 	=> 'event_feature_homepage',
-					'compare' 	=> '=',
-					'value'     => 1
 				),
 			);
 			$events = new WP_Query( $recurringHash);
@@ -238,11 +211,6 @@
 				$pParamHash['meta_key']	= 'event_start_date';
 				$pParamHash['orderby']	= 'meta_value';
 				$pParamHash['order']	= 'ASC';
-				$pParamHash['meta_query'][1] = array(
-					'key'	 	=> 'event_feature_homepage',
-					'compare' 	=> '=',
-					'value'     => 1
-				);
 				$events = new WP_Query( $pParamHash);
 				if($events->posts){
 					foreach($events->posts as $event_posts){
@@ -251,6 +219,7 @@
 				}
             }
         }
+*/
         if( !empty( $eventsHash ) ) {
             return eventSortByTime($eventsHash);
         } else {
@@ -287,6 +256,8 @@
                     break;
                 }
             }
+            //Sort event hash by parent timestamp keys
+			ksort($eventHash);
             // Set up posts hash
             $eventsPostsHash = array();
             foreach($eventHash AS $key => $eventsSorted){

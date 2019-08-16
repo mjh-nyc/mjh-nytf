@@ -40,20 +40,22 @@
 
 
         //sticky header
-        $("header.banner").stick_in_parent();
+        //$("header.banner").stick_in_parent();
+        function createSticky(sticky) {
+  
+          if (typeof sticky !== "undefined") {
 
-        /*$(window).scroll(function(){
-          var sticky = $('header.banner');
-          var scroll = $(window).scrollTop();
-          //get header height:
-          var hh = sticky.height();
-
-          if (scroll >= hh) {
-            sticky.addClass('is_stuck');
-          } else {
-            sticky.removeClass('is_stuck');
+            var pos = sticky.offset().top,
+                win = $(window);
+              
+            win.on("scroll", function() {
+                win.scrollTop() >= pos ? sticky.addClass("is_stuck") : sticky.removeClass("is_stuck");      
+            });     
           }
-        });*/
+        }
+        createSticky($("header.banner"));
+
+
         
 
         //function to scroll to section

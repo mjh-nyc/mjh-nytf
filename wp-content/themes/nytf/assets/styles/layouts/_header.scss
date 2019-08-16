@@ -4,9 +4,11 @@ header {
 	background-color: $black;
 	color: $white;
 	z-index: 8000;
-	/*&.is_stuck {
-		padding:1rem 0;
-	}*/
+	&.is_stuck {
+		position: fixed;
+		top: 0;
+		width: 100%;
+	}
 	.container .row {
 		align-items: center;
 	}
@@ -70,6 +72,7 @@ header {
 	overflow:auto;
 	overflow-y: scroll; 
  	-webkit-overflow-scrolling: touch;
+ 	z-index: 10000;
  	
 	.nav-primary-wrapper {
 		

@@ -13,7 +13,8 @@
     "sticky-kit": "^1.1.2",
     "lity": "^2.2.2",
     "unveil2": "^2.0.8",
-    "bigSlide": "^0.12.0"
+    "bigSlide": "^0.12.0",
+    "sticky": "^1.0.4"
   },
   "overrides": {
     "font-awesome": {

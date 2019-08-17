@@ -4,16 +4,17 @@ header {
 	background-color: $black;
 	color: $white;
 	z-index: 8000;
-	&.is_stuck {
-		position: fixed;
-		top: 0;
-		width: 100%;
-	}
+	
 	.container .row {
 		align-items: center;
 	}
 }
-
+&.is_stuck {
+	position: relative;
+	top: 0;
+	width: 100%;
+	z-index: 500;
+}
 //Navigation
 .home #menulink .hamburger {
 	color:$white;

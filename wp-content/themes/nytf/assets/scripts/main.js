@@ -40,7 +40,11 @@
 
 
         //sticky header
-        $("header.banner").stick_in_parent();
+        //$("header.banner").stick_in_parent();
+         $("header.banner").sticky({
+          topSpacing:0,
+          className: 'is_stuck'
+        });
         /*function createSticky(sticky) {
   
           if (typeof sticky !== "undefined") {

@@ -3,6 +3,48 @@
     "title": "Header options",
     "fields": [
         {
+            "key": "field_5d6564193ddd1",
+            "label": "Image hero header?",
+            "name": "image_hero_header",
+            "type": "true_false",
+            "instructions": "Select this checkbox if you want to feature a specific image on the show’s detail page with no text or button overlays (Featured image will be used).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5d6565053ddd2",
+            "label": "Header background color",
+            "name": "header_background_color",
+            "type": "color_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5d6564193ddd1",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#000000"
+        },
+        {
             "key": "field_5d520bd6a2fff",
             "label": "Subtitle",
             "name": "subtitle",
@@ -143,5 +185,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1565907027
+    "modified": 1566930696
 }

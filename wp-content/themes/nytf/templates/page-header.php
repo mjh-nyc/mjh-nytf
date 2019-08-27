@@ -51,9 +51,9 @@ if (!$image_hero_header){ ?>
 	<div class="full-width" <?php if($header_background_color): echo ' style="background-color: '.$header_background_color.';"'; endif; ?>>
 		<div class="container header" style="padding:0">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12" style="text-align: center;">
 					<?php if($f): ?>
-						<img src="<?php echo $f; ?>">
+						<img src="<?php echo $f; ?>" alt="<?php echo featuredImageAlt(get_the_ID()); ?>">
 						<h1 class="sr-only"><?php echo Titles\title(); ?></h1>
 					<?php endif; ?>
 				</div>
